@@ -53,6 +53,10 @@ public class ParseDataController {
         return Parse.editObject(Parse.bookTableRef, obj.toJSONString(), objectId);
     }
 
+    public static Boolean deleteBook(String objectId) throws IOException {
+        return Parse.deleteObject(Parse.bookTableRef, objectId);
+    }
+
     public static ArrayList<Employee> getEmployees() throws IOException {
 
         JSONObject bookJSON = Parse.getObject(Parse.employeeTableRef);
@@ -71,11 +75,23 @@ public class ParseDataController {
         return employees;
     }
 
-    public static Boolean insertEmployee(String name, String phone, String pages, String launchYear, String category) throws IOException {
+    public static Boolean insertEmployee(String name, String phone) throws IOException {
         JSONObject obj = new JSONObject();
         obj.put("name", name);
         obj.put("phone", phone);
 
         return Parse.postObject(Parse.employeeTableRef, obj.toJSONString());
+    }
+
+    public static Boolean editEmployee(String objectId, String name, String phone) throws IOException {
+        JSONObject obj = new JSONObject();
+        obj.put("name", name);
+        obj.put("phone", phone);
+
+        return Parse.editObject(Parse.employeeTableRef, obj.toJSONString(), objectId);
+    }
+
+    public static Boolean deleteEmployee(String objectId) throws IOException {
+        return Parse.deleteObject(Parse.employeeTableRef, objectId);
     }
 }

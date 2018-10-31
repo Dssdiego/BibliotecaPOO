@@ -21,6 +21,9 @@ public class App {
     private JLabel lblStatus;
     private JButton btnEditSelectedBook;
     private JButton btnDeleteSelectedBook;
+    private JButton btnInsertEmployee;
+    private JButton btnEditSelectedEmployee;
+    private JButton btnDeleteSelectedEmployee;
 
     private int defaultRowCount = 0;
 
@@ -28,8 +31,7 @@ public class App {
     TableModel employeeTableModel;
 
     Book selectedBook;
-
-    String selectedEmployeeID = "";
+    Employee selectedEmployee;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame(Strings.title_app);
@@ -62,11 +64,11 @@ public class App {
 
         btnInsertBook();
         btnEditBook();
-//        btnDeleteBook();
-//
-//        btnInsertEmployee();
-//        btnEditEmployee();
-//        btnDeleteEmployee();
+        btnDeleteBook();
+
+        btnInsertEmployee();
+        btnEditEmployee();
+        btnDeleteEmployee();
 
         status();
     }
@@ -78,6 +80,7 @@ public class App {
 
         tblBooks = new JTable(bookTableModel);
 
+        tblBooks.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tblBooks.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -119,20 +122,30 @@ public class App {
 
         tblEmployees = new JTable(employeeTableModel);
 
+        tblEmployees.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tblEmployees.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                selectedEmployeeID = (String) tblEmployees.getValueAt(tblEmployees.getSelectedRow(), 0);
+                int index = tblEmployees.getSelectedRow();
+
+                if (index != -1) {
+                    String objectId = (String) tblEmployees.getValueAt(index, 0);
+                    String name = (String) tblEmployees.getValueAt(index, 1);
+                    String phone = (String) tblEmployees.getValueAt(index, 2);
+
+                    selectedEmployee = new Employee(objectId, name, phone);
+                }
             }
         });
     }
 
     private void insertEmployeeTableData() throws IOException {
         for (Employee employee : ParseDataController.getEmployees()) {
+            String id = employee.getObjectId();
             String name = employee.getName();
             String phone = employee.getPhone();
 
-            Object[] data = {name, phone};
+            Object[] data = {id, name, phone};
 
             employeeTableModel.addRow(data);
         }
@@ -173,9 +186,81 @@ public class App {
         });
     }
 
+    private void btnDeleteBook() {
+        btnDeleteSelectedBook = new JButton();
+        btnDeleteSelectedBook.addActionListener(e -> {
+            try {
+                if (selectedBook != null) {
+                    if (JOptionPaneMultiInput.showDeleteBookDialog(selectedBook)) {
+                        getData();
+
+                    } else
+                        setStatus("Não foi possível excluir o livro no banco de dados");
+
+                } else
+                    JOptionPane.showMessageDialog(null, "É necessário selecionar um item para editar!");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+    }
+
+    private void btnInsertEmployee() {
+        btnInsertEmployee = new JButton();
+        btnInsertEmployee.addActionListener(e -> {
+            try {
+
+                if (JOptionPaneMultiInput.showInsertEmployeeDialog())
+                    getData();
+                else
+                    setStatus("Não foi possível inserir o funcionário no banco de dados");
+
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+    }
+
+    private void btnEditEmployee() {
+        btnEditSelectedEmployee = new JButton();
+        btnEditSelectedEmployee.addActionListener(e -> {
+            try {
+                if (selectedEmployee != null) {
+                    if (JOptionPaneMultiInput.showEditEmployeeDialog(selectedEmployee)) {
+                        getData();
+
+                    } else
+                        setStatus("Não foi possível editar o funcionário no banco de dados");
+
+                } else
+                    JOptionPane.showMessageDialog(null, "É necessário selecionar um item para editar!");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+    }
+
+    private void btnDeleteEmployee() {
+        btnDeleteSelectedEmployee = new JButton();
+        btnDeleteSelectedEmployee.addActionListener(e -> {
+            try {
+                if (selectedEmployee != null) {
+                    if (JOptionPaneMultiInput.showDeleteEmployeeDialog(selectedEmployee)) {
+                        getData();
+
+                    } else
+                        setStatus("Não foi possível excluir o funcionário no banco de dados");
+
+                } else
+                    JOptionPane.showMessageDialog(null, "É necessário selecionar um item para editar!");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+    }
+
     private void status() {
         lblStatus = new JLabel();
-        setStatus("Bem Vindo ao Gerenciador de Biblioteca");
     }
 
     private void setStatus(String text) {

@@ -117,7 +117,30 @@ public class Parse {
         }
     }
 
-    public static void deleteObject(String table, String params) throws IOException {
+    public static Boolean deleteObject(String table, String objectId) throws IOException {
+        URL obj = new URL(classesURL + table + "/" + objectId);
+        HttpURLConnection deleteConnection = (HttpURLConnection) obj.openConnection();
+        deleteConnection.setRequestMethod("DELETE");
+        deleteConnection.setRequestProperty("X-Parse-Application-Id", appID);
+        deleteConnection.setRequestProperty("X-Parse-Master-Key", masterKey);
+        deleteConnection.setRequestProperty("Content-Type", "application/json");
+        deleteConnection.setDoOutput(true);
 
+        int responseCode = deleteConnection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    deleteConnection.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = in .readLine()) != null) {
+                response.append(inputLine);
+            } in .close();
+            // print result
+            System.out.println(response.toString());
+            return true;
+        } else {
+            System.out.println("DELETE NOT WORKED");
+            return false;
+        }
     }
 }
