@@ -21,29 +21,6 @@ public class Parse {
     public static String bookTableRef = "Books";
     public static String employeeTableRef = "Employees";
 
-//    public void getObject() throws IOException {
-//        URL urlForGetRequest = new URL("https://hamburguerserver.herokuapp.com/parse/classes/Estoque");
-//        String readLine = "";
-//        HttpURLConnection conection = (HttpURLConnection) urlForGetRequest.openConnection();
-//        conection.setRequestMethod("POST");
-//        conection.setRequestProperty("X-Parse-Application-Id", "myAppId");
-//        conection.setRequestProperty("X-Parse-Master-Key", "myMasterKey");
-//        int responseCode = conection.getResponseCode();
-//        if (responseCode == HttpURLConnection.HTTP_OK) {
-//            BufferedReader in = new BufferedReader(
-//                    new InputStreamReader(conection.getInputStream()));
-//            StringBuffer response = new StringBuffer();
-//            while ((readLine = in .readLine()) != null) {
-//                response.append(readLine);
-//            } in .close();
-//            // print result
-//            System.out.println("JSON String Result " + response.toString());
-//            //GetAndPost.POSTRequest(response.toString());
-//        } else {
-//            System.out.println("GET NOT WORKED");
-//        }
-//    }
-
     public static JSONObject getObject(String table) throws IOException{
         JSONParser jsonParser = new JSONParser();
 
@@ -76,7 +53,7 @@ public class Parse {
         return new JSONObject();
     }
 
-    public static void editObject(String table, String params, String objectId) throws IOException {
+    public static Boolean editObject(String table, String params, String objectId) throws IOException {
         URL obj = new URL(classesURL + table + "/" + objectId);
         HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
         postConnection.setRequestMethod("PUT");
@@ -101,12 +78,14 @@ public class Parse {
             } in .close();
             // print result
             System.out.println(response.toString());
+            return true;
         } else {
             System.out.println("PUT NOT WORKED");
+            return false;
         }
     }
 
-    public static void postObject(String table, String params) throws IOException {
+    public static Boolean postObject(String table, String params) throws IOException {
         URL obj = new URL(classesURL + table);
         HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
         postConnection.setRequestMethod("POST");
@@ -131,8 +110,10 @@ public class Parse {
             } in .close();
             // print result
             System.out.println(response.toString());
+            return true;
         } else {
             System.out.println("POST NOT WORKED");
+            return false;
         }
     }
 

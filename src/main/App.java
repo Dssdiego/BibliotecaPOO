@@ -1,10 +1,12 @@
 import database.ParseDataController;
+import listeners.InsertBookButtonListener;
 import models.Book;
+import models.Employee;
+import models.TableModel;
+import resources.Strings;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class App {
     private JPanel panel1;
@@ -17,29 +19,43 @@ public class App {
     private JButton btnEditSelectedBook;
     private JButton btnDeleteSelectedBook;
 
+    private int defaultRowCount = 0;
+
+    TableModel bookTableModel;
+    TableModel employeeTableModel;
+
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Gerenciador de Biblioteca");
+        JFrame frame = new JFrame(Strings.title_app);
         frame.setContentPane(new App().panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
 
-    private void createUIComponents() throws IOException{
-        configComponents();
+    public void getData() throws IOException {
+        clearTables();
+    }
+
+    private void clearTables() throws IOException {
+        bookTableModel.clear();
+        employeeTableModel.clear();
 
         createBookTable();
         createEmployeeTable();
     }
 
-    private void createBookTable() throws IOException {
-        String[] columnNames = {"Título",
-                "Autor",
-                "Ano de Lançamento",
-                "Categoria",
-                "Páginas"};
+    private void createUIComponents() throws IOException {
+        configComponents();
 
-        DefaultTableModel dtm = new DefaultTableModel(columnNames, 0);
+        createBookTable();
+        createEmployeeTable();
+
+        btnInsertBook = new JButton();
+        btnInsertBook.addActionListener(new InsertBookButtonListener());
+    }
+
+    private void createBookTable() throws IOException {
+        bookTableModel = new TableModel(Strings.bookColumns, defaultRowCount);
 
         for (Book book : ParseDataController.getBooks()) {
             String title = book.getTitle();
@@ -50,34 +66,26 @@ public class App {
 
             Object[] data = {title, author, launchYear, category, pages};
 
-            dtm.addRow(data);
+            bookTableModel.addRow(data);
 
         }
 
-        tblBooks = new JTable(dtm);
+        tblBooks = new JTable(bookTableModel);
     }
 
     private void createEmployeeTable() throws IOException {
-        String[] columnNames = {"First Name",
-                "Last Name",
-                "Sport",
-                "# of Years",
-                "Vegetarian"};
+        employeeTableModel = new TableModel(Strings.employeeColumns, defaultRowCount);
 
-        Object[][] data = {
-                {"Kathy", "Smith",
-                        "Snowboarding", new Integer(5), new Boolean(false)},
-                {"John", "Doe",
-                        "Rowing", new Integer(3), new Boolean(true)},
-                {"Sue", "Black",
-                        "Knitting", new Integer(2), new Boolean(false)},
-                {"Jane", "White",
-                        "Speed reading", new Integer(20), new Boolean(true)},
-                {"Joe", "Brown",
-                        "Pool", new Integer(10), new Boolean(false)}
-        };
+        for (Employee employee : ParseDataController.getEmployees()) {
+            String name = employee.getName();
+            String phone = employee.getPhone();
 
-        tblEmployees = new JTable(data, columnNames);
+            Object[] data = {name, phone};
+
+            employeeTableModel.addRow(data);
+        }
+
+        tblEmployees = new JTable(employeeTableModel);
     }
 
     private void configComponents() {
@@ -90,6 +98,6 @@ public class App {
         prgBar.setMinimum(0);
         prgBar.setMaximum(100);
 
-        prgBar.setValue(50);
+//        prgBar.setValue(50);
     }
 }

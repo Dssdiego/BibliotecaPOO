@@ -1,18 +1,28 @@
 package models;
 
 public class Book {
+    String objectId;
     String title;
     String author;
     int launchYear;
     String category;
     int pages;
 
-    public Book(String title, String author, int launchYear, String category, int pages) {
+    public Book(String objectId, String title, String author, int launchYear, String category, int pages) {
+        this.objectId = objectId;
         this.title = title;
         this.author = author;
         this.launchYear = launchYear;
         this.category = category;
         this.pages = pages;
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 
     public String getTitle() {
