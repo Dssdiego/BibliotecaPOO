@@ -13,10 +13,13 @@ import java.net.URL;
 
 public class Parse {
 
-    private static String classesURL = "https://hamburguerserver.herokuapp.com/parse/classes/";
-    private static String parseURL = "https://hamburguerserver.herokuapp.com/parse/";
+    private static String classesURL = "https://parse-server-biblioteca.herokuapp.com/parse/classes/";
+    private static String parseURL = "https://parse-server-biblioteca.herokuapp.com/parse/";
     private static String appID = "myAppId";
     private static String masterKey = "myMasterKey";
+
+    public static String bookTableRef = "Books";
+    public static String employeeTableRef = "Employees";
 
 //    public void getObject() throws IOException {
 //        URL urlForGetRequest = new URL("https://hamburguerserver.herokuapp.com/parse/classes/Estoque");
@@ -129,7 +132,11 @@ public class Parse {
             // print result
             System.out.println(response.toString());
         } else {
-            System.out.println("opa");
+            System.out.println("POST NOT WORKED");
         }
+    }
+
+    public static void deleteObject(String table, String params) throws IOException {
+
     }
 }

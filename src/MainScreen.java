@@ -1,5 +1,6 @@
 import database.Parse;
 import listeners.AboutMenuItemListener;
+import org.json.simple.JSONObject;
 import resources.Dimens;
 import resources.Strings;
 
@@ -9,15 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.Charset;
-import org.json.simple.JSONObject;
 
 public class MainScreen extends JFrame implements ActionListener, KeyListener {
     JMenuBar menuBar;
@@ -25,17 +18,17 @@ public class MainScreen extends JFrame implements ActionListener, KeyListener {
     JMenuItem bookItem, employeeItem, exitItem;
     JLabel lblCode = new JLabel("<html><h1 align='center'>Gerenciador de Biblioteca</h1></html>");
 
-    public static void main(String[] args) throws IOException {
-//        MainScreen fr = new MainScreen();
-//        fr.setVisible(true);
-
-        JSONObject obj = new JSONObject();
-
-        obj.put("nome", "X-Tudão");
-
-        Parse.editObject("Estoque", obj.toJSONString(), "aZvVjc4QZN");
-//        Parse.postObject("Estoque", obj.toJSONString());
-    }
+//    public static void main(String[] args) throws IOException {
+////        MainScreen fr = new MainScreen();
+////        fr.setVisible(true);
+//
+//        JSONObject obj = new JSONObject();
+//
+////        obj.put("nome", "X-Tudão");
+//
+////        Parse.editObject("Estoque", obj.toJSONString(), "aZvVjc4QZN");
+////        Parse.postObject("Estoque", obj.toJSONString());
+//    }
 
     private MainScreen() {
         setLayout(new FlowLayout());
